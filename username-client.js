@@ -1,12 +1,16 @@
+require('dotenv').config();
 var net = require("net");
 var jsonStream = require("duplex-json-stream");
-var username = process.argv[2];
-var key = process.argv[3];
 var notifySend = require("notify-send");
 var crypto = require('crypto');
 var fs = require('fs');
 
-var socket = jsonStream(net.connect(42069, "1.1.1.1"));
+var username = process.env.USERNAME;
+var ip = process.env.IP;
+var port = process.env.PORT;
+var key = process.env.KEY;
+
+var socket = jsonStream(net.connect(port, ip));
 
 //load commands from commands folder
 var commands = [];
