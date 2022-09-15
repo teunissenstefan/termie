@@ -7,7 +7,7 @@ Terminal based chat app.
 Clone the project:
 
 ```bash
-git clone https://github.com/iankressin/chat-server
+git clone https://github.com/teunissenstefan/termie
 ```
 
 Start the server
@@ -18,8 +18,5 @@ node server.js
 
 Connect to server, passing the username argument, and start messaging:
 ```bash
-node username-client.js myName
+node username-client.js
 ```
-
-### Next
-Create browser user interface!
