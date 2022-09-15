@@ -3,10 +3,14 @@ var net = require("net");
 var jsonStream = require("duplex-json-stream");
 var notifySend = require("notify-send");
 var crypto = require('crypto');
-var username = process.env.USERNAME;
+
+var inputKey = process.argv[2];
+var inputUser = process.argv[3];
+
+var username = typeof inputUser !== 'undefined' ? inputUser : process.env.USERNAME;
 var ip = process.env.IP;
 var port = process.env.PORT;
-var key = process.env.KEY;
+var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
 
 var socket = jsonStream(net.connect(port, ip));
 
