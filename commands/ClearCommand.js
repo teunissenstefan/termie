@@ -1,11 +1,11 @@
 const Command = require('./Command');
 
 module.exports = class ClearCommand extends Command {
-    constructor() {
-        super('clear', 'Clear messages');
+    constructor(client) {
+        super(client, 'clear', 'Clear messages');
     }
 
-    execute() {
+    execute(argv) {
         console.clear();
     }
 };

@@ -1,11 +1,11 @@
 module.exports = class Command {
-
-    constructor(name, description) {
+    constructor(client, name, description) {
+        this.client = client;
         this.name = name;
         this.description = description;
     }
 
-    execute() {
-        console.log("Command executed");
+    execute(argv) {
+        this.client.drawLine("Command executed\n");
     }
 };
