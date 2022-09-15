@@ -45,9 +45,8 @@ process.stdin.on("data", data => {
         let command = commands.find(c => c.name == msg.split(" ")[0].substring(1));
         if(command) {
             command.execute(msg, socket, username);
+	    return;
         }
-
-        return;
     }
 
   var cipher = crypto.createCipher("aes256", key);
