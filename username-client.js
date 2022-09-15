@@ -13,16 +13,11 @@ var ip = process.env.IP;
 var port = process.env.PORT;
 var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
 
-console.log(username);
-console.log(ip);
-console.log(port);
-console.log(key);
-
 var socket = jsonStream(net.connect(port, ip));
 
 //load commands from commands folder
 var commands = [];
-fs.readdirSync("./commands").forEach(file => {
+fs.readdirSync(__dirname + "/./commands").forEach(file => {
     if (file == 'Command.js') return;
     var command = require("./commands/" + file);
     commands.push(new command());
