@@ -40,7 +40,6 @@ socket.on("data", data => {
         var decrypted = data.message;
     }
 
-    // console.log(`${data.username}${messageDelimiter}${decrypted}`);
     var userMessage = `${data.username}${messageDelimiter}${decrypted}`;
     drawMessage(userMessage);
     drawInput();
@@ -69,13 +68,25 @@ function drawInput() {
 var input = "";
 var inputMaxLength = 0;
 process.stdin.on("keypress", (char, evt) => {
-    if ((evt.name === 'c' || evt.name === 'd') && evt.ctrl === true) {
+    // console.log("Char:", JSON.stringify(char), "Evt:", JSON.stringify(evt)); //for testing
+
+    if (
+        (
+            evt.name === 'c' || evt.name === 'd'
+        )
+        && evt.ctrl === true) {
         process.exit();
     } else if (evt.name === 'return') {
         drawMessage(username + messageDelimiter + input);
         processInput();
     } else if (evt.name === 'backspace') {
         input = input.substring(0, input.length - 1);
+    } else if (evt.ctrl === true && evt.name === "w") {
+        removeLastWord();
+    } else if (evt.ctrl === true && evt.name === "u") {
+        input = "";
+    }  else if (evt.ctrl === true && evt.name === "l") {
+        console.clear();
     } else {
         input += evt.sequence;
     }
@@ -101,4 +112,18 @@ function processInput() {
     var cipher = crypto.createCipher("aes256", key);
     var encrypted = cipher.update(msg, 'utf8', 'hex') + cipher.final('hex');
     socket.write({username, message: encrypted});
+}
+
+function removeLastWord() {
+    var words = input.split(" ").reverse();
+    var count = 0;
+    for (var i = 0; i < words.length; i++) {
+        count++;
+        var word = words[i];
+        if (!word) continue;
+
+        break;//A word has been found so there's nothing more for us to delete
+    }
+    words.splice(0, count);
+    input = words.reverse().join(" ");
 }
