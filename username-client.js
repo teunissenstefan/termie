@@ -1,3 +1,6 @@
+//Disable all warnings because we are cool
+process.removeAllListeners('warning');
+
 require('dotenv').config();
 var net = require("net");
 var jsonStream = require("duplex-json-stream");
