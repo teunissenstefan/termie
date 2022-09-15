@@ -11,7 +11,7 @@ socket.on("data", data => {
   var decipher = crypto.createDecipher("aes256", key);
   var decrypted = decipher.update(data.message, 'hex', 'utf8') + decipher.final('utf8');
   console.log(`${data.username} > ${decrypted}`);
-  if(data.message.includes("!")){
+  if(decrypted.includes("!")){
     notifySend.notify(data.username, data.message);
   }
 });
