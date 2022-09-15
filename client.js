@@ -15,6 +15,7 @@ var username = typeof inputUser !== 'undefined' ? inputUser : process.env.CHAT_U
 var ip = process.env.IP;
 var port = process.env.PORT;
 var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
+var messageDelimiter = typeof process.env.MESSAGE_DELIMITER !== 'undefined' ? process.env.MESSAGE_DELIMITER : " > ";
 
 var socket = jsonStream(net.connect(port, ip));
 
@@ -29,8 +30,14 @@ fs.readdirSync(__dirname + "/./commands").forEach(file => {
 
 socket.on("data", data => {
     var decipher = crypto.createDecipher("aes256", key);
-    var decrypted = decipher.update(data.message, 'hex', 'utf8') + decipher.final('utf8');
-    console.log(`${data.username} > ${decrypted}`);
+
+    try {
+        var decrypted = decipher.update(data.message, 'hex', 'utf8') + decipher.final('utf8');
+    } catch (e) {
+        var decrypted = data.message;
+    }
+
+    console.log(`${data.username}${messageDelimiter}${decrypted}`);
     if (decrypted.includes("!")) {
         notifySend.notify(data.username, decrypted);
     }
