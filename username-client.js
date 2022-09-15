@@ -8,10 +8,15 @@ var fs = require('fs');
 var inputKey = process.argv[2];
 var inputUser = process.argv[3];
 
-var username = typeof inputUser !== 'undefined' ? inputUser : process.env.USERNAME;
+var username = typeof inputUser !== 'undefined' ? inputUser : process.env.CHAT_USER;
 var ip = process.env.IP;
 var port = process.env.PORT;
 var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
+
+console.log(username);
+console.log(ip);
+console.log(port);
+console.log(key);
 
 var socket = jsonStream(net.connect(port, ip));
 
