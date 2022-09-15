@@ -16,4 +16,4 @@ var server = net.createServer(socket => {
   streams.add(socket);
 });
 
-server.listen(9000);
+server.listen(42069);
