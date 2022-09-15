@@ -4,6 +4,7 @@
   "description": "Terminal based chat app.",
   "main": "server.js",
   "dependencies": {
+    "dotenv": "^16.0.2",
     "duplex-json-stream": "^1.0.1",
     "notify-send": "^0.1.2"
   },
