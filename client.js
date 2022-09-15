@@ -85,8 +85,10 @@ process.stdin.on("keypress", (char, evt) => {
         removeLastWord();
     } else if (evt.ctrl === true && evt.name === "u") {
         input = "";
-    }  else if (evt.ctrl === true && evt.name === "l") {
+    } else if (evt.ctrl === true && evt.name === "l") {
         console.clear();
+    } else if (evt.name === "up" || evt.name === "down" || evt.name === "left" || evt.name === "right") {
+        return;
     } else {
         input += evt.sequence;
     }
