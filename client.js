@@ -69,11 +69,7 @@ function drawInput() {
 var input = "";
 var inputMaxLength = 0;
 process.stdin.on("keypress", (char, evt) => {
-    if (
-        (
-            evt.name === 'c' || evt.name === 'd'
-        )
-        && evt.ctrl === true) {
+    if ((evt.name === 'c' || evt.name === 'd') && evt.ctrl === true) {
         process.exit();
     } else if (evt.name === 'return') {
         drawMessage(username + messageDelimiter + input);
