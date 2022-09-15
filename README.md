@@ -13,10 +13,10 @@ git clone https://github.com/teunissenstefan/termie
 Start the server
 
 ```bash
-node server.js
+node server.js [port?]
 ```
 
-Connect to server, passing the username argument, and start messaging:
+Connect to server, optionally passing the key and username arguments, and start messaging:
 ```bash
-node username-client.js
+node client.js [key?] [username?]
 ```
