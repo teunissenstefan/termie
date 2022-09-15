@@ -9,8 +9,6 @@ var inputKey = process.argv[2];
 var inputUser = process.argv[3];
 
 var username = typeof inputUser !== 'undefined' ? inputUser : process.env.USERNAME;
-
-var username = process.env.USERNAME;
 var ip = process.env.IP;
 var port = process.env.PORT;
 var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
