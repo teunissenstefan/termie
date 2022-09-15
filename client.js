@@ -1,7 +1,10 @@
 //Disable all warnings because we are cool
 process.removeAllListeners('warning');
+process.stdin.setRawMode(true);
 
 require('dotenv').config();
+var readline = require("readline");
+readline.emitKeypressEvents(process.stdin);
 var net = require("net");
 var jsonStream = require("duplex-json-stream");
 var notifySend = require("notify-send");
@@ -37,14 +40,57 @@ socket.on("data", data => {
         var decrypted = data.message;
     }
 
-    console.log(`${data.username}${messageDelimiter}${decrypted}`);
+    // console.log(`${data.username}${messageDelimiter}${decrypted}`);
+    var userMessage = `${data.username}${messageDelimiter}${decrypted}`;
+    drawMessage(userMessage);
+    drawInput();
     if (decrypted.includes("!")) {
         notifySend.notify(data.username, decrypted);
     }
 });
 
-process.stdin.on("data", data => {
-    let msg = data.toString().trim();
+//Standardize line drawing because of the custom input handler
+function drawLine(line) {
+    process.stdout.cursorTo(0);
+    process.stdout.write(line);
+    process.stdout.cursorTo(input.length);
+}
+
+//Draw a message in the chat view
+function drawMessage(message) {
+    drawLine(message.padEnd(inputMaxLength, ' ') + `\n`);
+}
+
+//Draw the input on the last line
+function drawInput() {
+    drawLine(input.padEnd(inputMaxLength, ' ') + "\r");
+}
+
+var input = "";
+var inputMaxLength = 0;
+process.stdin.on("keypress", (char, evt) => {
+    if (
+        (
+            evt.name === 'c' || evt.name === 'd'
+        )
+        && evt.ctrl === true) {
+        process.exit();
+    } else if (evt.name === 'return') {
+        drawMessage(username + messageDelimiter + input);
+        processInput();
+    } else if (evt.name === 'backspace') {
+        input = input.substring(0, input.length - 1);
+    } else {
+        input += evt.sequence;
+    }
+
+    inputMaxLength = Math.max(inputMaxLength, input.length);
+    drawInput();
+});
+
+function processInput() {
+    let msg = input.trim();
+    input = "";
 
     //handle client commands
     if (msg.startsWith("/")) {
@@ -59,4 +105,4 @@ process.stdin.on("data", data => {
     var cipher = crypto.createCipher("aes256", key);
     var encrypted = cipher.update(msg, 'utf8', 'hex') + cipher.final('hex');
     socket.write({username, message: encrypted});
-});
+}
