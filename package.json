@@ -1,0 +1,26 @@
+{
+  "name": "termie",
+  "version": "1.0.0",
+  "description": "Terminal based chat app.",
+  "main": "server.js",
+  "dependencies": {
+    "duplex-json-stream": "^1.0.1",
+    "notify-send": "^0.1.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teunissenstefan/termie.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teunissenstefan/termie/issues"
+  },
+  "homepage": "https://github.com/teunissenstefan/termie#readme"
+}
