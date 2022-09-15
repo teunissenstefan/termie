@@ -1,11 +1,14 @@
+require('dotenv').config();
 var net = require("net");
 var jsonStream = require("duplex-json-stream");
-var username = process.argv[2];
-var key = process.argv[3];
 var notifySend = require("notify-send");
 var crypto = require('crypto');
+var username = process.env.USERNAME;
+var ip = process.env.IP;
+var port = process.env.PORT;
+var key = process.env.KEY;
 
-var socket = jsonStream(net.connect(42069, "127.0.0.1"));
+var socket = jsonStream(net.connect(port, ip));
 
 socket.on("data", data => {
   var decipher = crypto.createDecipher("aes256", key);
