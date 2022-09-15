@@ -7,7 +7,9 @@ var socket = jsonStream(net.connect(42069, "127.0.0.1"));
 
 socket.on("data", data => {
   console.log(`${data.username} > ${data.message}`);
-  notifySend.notify(data.username, data.message);
+  if(data.message.includes("!")){
+    notifySend.notify(data.username, data.message);
+  }
 });
 
 process.stdin.on("data", data => {
