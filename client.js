@@ -18,7 +18,10 @@ this.username = typeof inputUser !== 'undefined' ? inputUser : process.env.CHAT_
 var ip = process.env.IP;
 var port = process.env.PORT;
 var key = typeof inputKey !== 'undefined' ? inputKey : process.env.KEY;
+this.maxHistory = typeof process.env.MAX_HISTORY !== 'undefined' ? process.env.MAX_HISTORY : 50;
 this.messageDelimiter = typeof process.env.MESSAGE_DELIMITER !== 'undefined' ? process.env.MESSAGE_DELIMITER : " > ";
+this.messageHistory = [];
+this.messageHistorySelected = -1;
 
 var socket = jsonStream(net.connect(port, ip));
 
@@ -73,6 +76,7 @@ process.stdin.on("keypress", (char, evt) => {
     } else if (evt.name === 'return') {
         this.drawMessage(this.username + this.messageDelimiter + input);
         this.processInput(this);
+        this.messageHistorySelected = -1;
     } else if (evt.name === 'backspace') {
         input = input.substring(0, input.length - 1);
     } else if (evt.ctrl === true && evt.name === "w") {
@@ -81,8 +85,12 @@ process.stdin.on("keypress", (char, evt) => {
         input = "";
     } else if (evt.ctrl === true && evt.name === "l") {
         console.clear();
-    } else if (evt.name === "up" || evt.name === "down" || evt.name === "left" || evt.name === "right") {
+    } else if (evt.name === "left" || evt.name === "right") {
         return;
+    } else if (evt.name === "up") {
+        this.messageHistoryUp();
+    } else if (evt.name === "down") {
+        this.messageHistoryDown();
     } else {
         input += evt.sequence;
     }
@@ -91,8 +99,42 @@ process.stdin.on("keypress", (char, evt) => {
     this.drawInput();
 });
 
+this.messageHistoryUp = function () {
+    if (this.messageHistorySelected === 0) {
+        return;
+    }
+
+    if (this.messageHistorySelected === -1) {
+        this.messageHistorySelected = this.messageHistory.length - 1;
+    } else {
+        this.messageHistorySelected--;
+    }
+    input = this.messageHistory[this.messageHistorySelected];
+}
+
+this.messageHistoryDown = function () {
+    if (this.messageHistorySelected === this.messageHistory.length) {
+        return;
+    }
+
+    this.messageHistorySelected++;
+    if (this.messageHistorySelected === this.messageHistory.length) {
+        input = "";
+    } else {
+        input = this.messageHistory[this.messageHistorySelected];
+    }
+}
+
+this.messageHistoryAdd = function (message) {
+    this.messageHistory.push(message);
+    if (this.messageHistory.length > this.maxHistory) {
+        this.messageHistory.shift();
+    }
+}
+
 this.processInput = function (client) {
     let msg = input.trim();
+    this.messageHistoryAdd(msg);
     input = "";
 
     //Handle client commands
