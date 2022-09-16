@@ -100,7 +100,7 @@ process.stdin.on("keypress", (char, evt) => {
 });
 
 this.messageHistoryUp = function () {
-    if (this.messageHistorySelected === 0) {
+    if (this.messageHistorySelected === 0 || this.messageHistory.length === 0) {
         return;
     }
 
